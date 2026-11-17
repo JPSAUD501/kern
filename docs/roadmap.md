@@ -13,6 +13,8 @@ The skeleton everything else grows on, with the quality gates in place from the 
 
 **Exit:** a debug build installs on the emulator and on a physical phone, types correctly into the bench app and Chrome, and CI is green.
 
+**Status (2026-11-17):** built; CI green; types correctly into the bench app and Chrome on the emulator. Still open: the check on a physical phone.
+
 ## M1. Measurement
 
 Nothing about quality is decided without this.
