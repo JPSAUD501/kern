@@ -1,0 +1,4 @@
+[bindings.kotlin]
+package_name = "io.github.jpsaud501.kern.engine.ffi"
+cdylib_name = "kern_ffi"
+android = true

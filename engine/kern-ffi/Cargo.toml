@@ -1,0 +1,20 @@
+[package]
+name = "kern-ffi"
+description = "Kotlin bindings for Kern's typing engine, generated with UniFFI."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "kern_ffi"
+
+[dependencies]
+kern-core.workspace = true
+thiserror.workspace = true
+uniffi.workspace = true
+
+[lints]
+workspace = true
