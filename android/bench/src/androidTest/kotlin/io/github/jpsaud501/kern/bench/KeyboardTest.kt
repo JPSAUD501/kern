@@ -151,6 +151,10 @@ class KeyboardTest {
             val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
             val installed = device.executeShellCommand("pm path $KERN_PACKAGE")
             check(installed.isNotBlank()) { "Kern ($KERN_PACKAGE) must be installed before running the bench tests" }
+            // Emulators report the host's keyboard as a hardware keyboard, and Android hides every
+            // on-screen keyboard while one is attached unless this setting is on. The tests need
+            // the device to behave like a phone with no hardware keyboard.
+            device.executeShellCommand("settings put secure show_ime_with_hard_keyboard 1")
             device.executeShellCommand("ime enable $KERN_IME")
             device.executeShellCommand("ime set $KERN_IME")
         }
