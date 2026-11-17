@@ -138,6 +138,18 @@ Everything generative goes through OpenRouter: rewrite, translate, tone, proofre
 
 FineWeb-2, HPLT, mC4 and similar crawls are not used to build anything that ships. Their packaging is licensed, but the text belongs to third parties. Informal coverage comes from synthetic chat-style text generated with Apache-2.0 models (D11). They may be used for evaluation only if a license review allows it.
 
+## D21. Application id `io.github.jpsaud501.kern` (2026-11-17)
+
+The package name and application id is `io.github.jpsaud501.kern`, a namespace João controls through GitHub. It can never change after the first Play Store release.
+
+**Why:** a reverse-domain id needs a domain the project owns. Buying one (kernkeyboard.app and kernkeyboard.com were free on 2026-11-17) is optional and would not change the id.
+
+## D22. Native code for arm64-v8a and x86_64 only (2026-11-17)
+
+The engine is built for arm64-v8a (phones) and x86_64 (emulators and Chromebooks). The app filters every other ABI out of the APK, including the extra ones dependencies such as JNA ship.
+
+**Why:** every phone that runs Android 14 (D2) is 64-bit ARM. 32-bit ABIs would add size and test surface for no user. Without the filter, a device on another ABI would install Kern and crash because the engine is missing.
+
 ## Open questions for João
 
 - **Q4. Reference device.** A mid-range phone that all performance bars are measured on, plus which phones João owns for manual testing.

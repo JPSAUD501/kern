@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kern bench</string>
+    <string name="field_sentence">Sentence (auto-capitalized)</string>
+    <string name="field_multiline">Multi-line</string>
+    <string name="field_email">Email</string>
+    <string name="field_password">Password</string>
+    <string name="field_search">Search (enter runs the search)</string>
+    <string name="field_number">Number</string>
+    <string name="search_result">search:%1$s</string>
+    <string name="field_raw">Raw input (TYPE_NULL, like a terminal)</string>
+</resources>

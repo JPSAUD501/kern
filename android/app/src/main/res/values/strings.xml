@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Kern</string>
+    <string name="ime_name" translatable="false">Kern</string>
+    <string name="subtype_qwerty" translatable="false">QWERTY</string>
+
+    <string name="setup_subtitle">A keyboard for every language you speak.</string>
+    <string name="setup_enable_title">Turn on Kern</string>
+    <string name="setup_enable_body">Android will warn that a keyboard can collect what you type. Kern keeps it on your phone.</string>
+    <string name="setup_enable_action">Open settings</string>
+    <string name="setup_select_title">Switch to Kern</string>
+    <string name="setup_select_body">Choose Kern as the keyboard you type with.</string>
+    <string name="setup_select_action">Choose keyboard</string>
+    <string name="setup_try_title">Try it</string>
+    <string name="setup_try_hint">Type something</string>
+    <string name="setup_step_done">Done</string>
+
+    <string name="key_shift">Shift</string>
+    <string name="key_shift_once">Shift, on</string>
+    <string name="key_caps_lock">Caps lock</string>
+    <string name="key_delete">Delete</string>
+    <string name="key_space">Space</string>
+    <string name="key_enter">Enter</string>
+    <string name="key_go">Go</string>
+    <string name="key_search">Search</string>
+    <string name="key_send">Send</string>
+    <string name="key_next">Next</string>
+    <string name="key_previous">Previous</string>
+    <string name="key_done">Done</string>
+</resources>
