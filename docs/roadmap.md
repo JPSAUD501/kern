@@ -35,9 +35,9 @@ Nothing about quality is decided without this.
 - Training pipeline for the layout-conditioned CTC encoder, export, int8 quantization.
 - Decoder in Rust over the union of lexicons, rescored by the language model.
 - Swipe trail drawn on the GPU.
-- Swipe collection for PT and IT (per Q2), and test sets for every launch language.
+- Test sets for every launch language: the real swipes available (D9), plus synthetic swipes where none exist (D18).
 
-**Exit:** top-1 accuracy on the English test split at or above the best published open result; per-language targets set from the first PT and IT test sets and met; p95 decode under 40 ms on the reference device.
+**Exit:** top-1 accuracy on the English test split at or above the best published open result; per-language targets set from the first measurements and met; p95 decode under 40 ms on the reference device.
 
 ## M4. Personalization, layouts and feel
 
@@ -48,21 +48,20 @@ Nothing about quality is decided without this.
 
 **Exit:** personalization measurably improves harness scores on simulated users; accessibility audit passes; design review by João.
 
-## M5. Voice
+## M5. AI assistance
 
-- Model download manager (pinned revisions, checksums, resumable).
-- Nemotron streaming through sherpa-onnx, compared with Parakeet on our languages.
-- On-device cleanup and voice commands.
-
-**Exit:** real-time factor and word error rate measured on the reference device in every launch language and accepted.
-
-## M6. AI assistance
-
-- OpenRouter sign-in (OAuth PKCE), key storage, model list as data.
-- Rewrite, translate, tone, proofread with diff preview; optional cloud voice cleanup.
+- OpenRouter sign-in (OAuth PKCE), key storage, default model list.
+- Rewrite, translate, tone, proofread with diff preview.
 - Consent flow and privacy screen.
 
 **Exit:** every request verified (in a test against a mock server) to carry the zero-retention settings; no AI action reachable where D13 forbids it.
+
+## M6. Voice
+
+- Recording, OpenRouter transcription and cleanup, preview before insertion (D19).
+- Hand-off to the system's voice input when there is no OpenRouter account.
+
+**Exit:** word error rate and end-to-end latency (stop speaking to text shown) measured in every launch language and accepted.
 
 ## M7. Smart features
 

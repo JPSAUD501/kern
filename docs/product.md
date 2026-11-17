@@ -54,8 +54,8 @@ These are release blockers, measured on a mid-range reference device (to be chos
 - Space bar cursor control, word-wise delete gesture, one-handed and split layouts.
 
 **Assistance**
-- Rewrite, translate, change tone, proofread, with a diff preview, through OpenRouter with the user's own account. An on-device model for these is a post-1.0 goal.
-- Voice input: on-device streaming recognition by default, optional cloud transcription and cleanup through OpenRouter.
+- Rewrite, translate, change tone, proofread, with a diff preview, through OpenRouter with the user's own account.
+- Voice input: transcription and cleanup through OpenRouter, shown before it is inserted. Without an account, the microphone hands off to the system's voice input.
 - Smart clipboard: one-time codes, Pix keys, tracking numbers, addresses, offered at the right moment and expired after a while.
 - Semantic emoji search, on-device.
 

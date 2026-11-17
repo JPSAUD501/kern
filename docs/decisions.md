@@ -55,7 +55,7 @@ Neural models are trained in PyTorch, exported with `torch.export`, quantized to
 A small CTC encoder (under 1M parameters) takes the swipe trajectory and the keyboard geometry and emits key probabilities. A trie-constrained beam search runs over the union of the enabled languages' lexicons, and Kern's multilingual language model rescores the candidates (the same LM as tap typing).
 
 - **Training data:** swipe.futo.org (MIT, about 1.2M swipes, mostly English) and How We Swipe (MIT, about 109K). Synthetic swipes only as a complement, never as the main source: published results show synthetic-only training performs far worse.
-- **Gap:** no open real swipes exist for Portuguese or Italian, and very few for German, French and Spanish. Kern collects its own (see open question Q2).
+- **Gap:** no open real swipes exist for Portuguese or Italian, and very few for German, French and Spanish. Collecting our own is out of scope for now (D18).
 - **Before 1.0:** a legal review of Google's active patents on neural gesture decoding (for example US 9,678,664).
 
 See `docs/research/swipe.md`.
@@ -75,9 +75,9 @@ Shipped language packs are built from: Wikipedia and Wiktionary (CC BY-SA 4.0), 
 
 - **Excluded:** OpenSubtitles, Reddit, Twitter/X, Stack Exchange, OSCAR. GPL-only dictionaries (German, Italian, possibly PT-PT) are used only to measure coverage, not shipped.
 - **Still to check before use:** the Leipzig Corpora license per download and the PT-PT dictionary license.
-- Web-crawl datasets: see open question Q3.
+- Web-crawl datasets: not shipped (D20).
 
-## D12. Voice: on-device streaming ASR as an optional download (2026-11-17)
+## D12. Voice: on-device streaming ASR as an optional download (2026-11-17, superseded by D19)
 
 - **Default engine:** NVIDIA Nemotron 3.5 ASR Streaming 0.6B (weights under OpenMDW-1.1, a permissive license that is not OSI-approved) run with sherpa-onnx (Apache-2.0). It covers all launch languages including pt-BR and pt-PT, streams words while the user speaks, and outputs punctuation. The int8 model is about 650 MB, so it is downloaded on demand with a pinned revision and checksum, and its license ships with it. Parakeet TDT 0.6B v3 (CC BY 4.0) is evaluated against it.
 - **Cleanup on device, always:** spoken punctuation, voice commands such as "scratch that" applied as one undoable edit, per-language filler lists.
@@ -90,7 +90,7 @@ See `docs/research/voice-and-cloud.md`.
 
 - **Sign-in:** OpenRouter's OAuth PKCE flow returns a key billed to the user's account, stored with the Android Keystore. Pasting a key is the fallback.
 - **Every request** sets `provider: { zdr: true, data_collection: "deny" }`. Text requests also exclude providers that retain flagged data for abuse review even under zero retention.
-- **Models are data, not code:** a default list (currently `gpt-6-luna` with reasoning off for text, falling back to `claude-haiku-5.5`; `whisper-large-v3-turbo` for transcription) that can be updated without an app release and overridden by the user.
+- **Models are data, not code:** a default list (currently `gpt-6-luna` with reasoning off for text, falling back to `claude-haiku-5.5`; `whisper-large-v3-turbo` for transcription) that ships with the app and can be overridden by the user. Updating it without an app release would need a server (D1 rules one out), so the defaults change with releases.
 - **Respect the app:** no AI action is offered where `EditorInfo.isWritingToolsEnabled()` is false (API 36), in password fields, or with `IME_FLAG_NO_PERSONALIZED_LEARNING`.
 - **Consent:** an in-app disclosure before the first request, and a privacy screen listing every request (time, feature, model, size), stored only on the phone.
 
@@ -114,9 +114,30 @@ Personal data (user dictionary, learned corrections, touch model) lives in crede
 - IME: a bench app of misbehaving text fields written for Kern, UI tests on a free emulator matrix in GitHub Actions (full system images, not ATD, which lacks a keyboard, Chrome and Settings), and a manual pass on owned phones for apps that can't run in CI (WhatsApp, Instagram and others).
 - Latency: Perfetto traces, plus a 240 fps camera for touch-to-photon checks on the reference device.
 
+## D17. License: GPL-3.0-or-later (2026-11-17)
+
+All code in this repository is GPL-3.0-or-later. Model weights and language packs carry the license their sources require (CC BY-SA 4.0 where share-alike data is used, which is one-way compatible with GPLv3), listed in each pack.
+
+**Why:** a keyboard's value rests on trust. GPL keeps every fork open, so nobody can ship a modified Kern that quietly collects text. It also lets language packs use share-alike data.
+
+## D18. No swipe collection for now (2026-11-17)
+
+Kern does not collect swipes from volunteers, by any means, until this decision is revisited. Swipe for every language is trained on the open data in D9, with layout and lexicon conditioning doing the cross-language work.
+
+**Consequence:** there is no real-swipe test set for Portuguese and Italian, and only a small one for German, French and Spanish. Swipe quality in those languages is measured on synthetic swipes and on the small real sets, and the release notes say so plainly. Revisit before 1.0.
+
+## D19. Only the typing core runs models on the phone (2026-11-17)
+
+Models run locally only where the network can't do the job: tap decoding, correction, prediction and swipe. They run on every keystroke within a few milliseconds, must work offline, and sending every keystroke to a server would break D1. They are small (a few MB per language), not large language models.
+
+Everything generative goes through OpenRouter: rewrite, translate, tone, proofread and dictation cleanup. There is no on-device LLM goal.
+
+**Voice in 1.0** (supersedes the on-device engine in D12): the microphone records, OpenRouter transcribes, and a text model cleans up the result, which is shown before it is inserted. Without an OpenRouter account, the microphone key hands off to the system's voice input. On-device streaming recognition (Nemotron through sherpa-onnx, evaluated in `docs/research/voice-and-cloud.md`) stays a candidate for after 1.0, as an optional download for people who want offline voice.
+
+## D20. No web-crawl text in shipped language packs (2026-11-17)
+
+FineWeb-2, HPLT, mC4 and similar crawls are not used to build anything that ships. Their packaging is licensed, but the text belongs to third parties. Informal coverage comes from synthetic chat-style text generated with Apache-2.0 models (D11). They may be used for evaluation only if a license review allows it.
+
 ## Open questions for João
 
-- **Q1. Code license.** GPL-3.0-or-later (forks must stay open; matches HeliBoard; language packs can include CC BY-SA and GPL-compatible data) or Apache-2.0 (anyone can embed the engine, including in closed products; matches FlorisBoard).
-- **Q2. Collecting real swipes for PT and IT.** It needs a way for volunteers to contribute prompted words (never their own text). Options: a small collection service on João's infrastructure that only accepts prompted-word traces and publishes them as an open dataset; or an in-app contribution mode that exports a file the volunteer uploads to a public dataset themselves.
-- **Q3. Web-crawl text (FineWeb-2, HPLT, mC4) for language models.** The datasets' packaging is licensed, but the text belongs to third parties. Using them improves informal coverage; excluding them is legally cleaner.
 - **Q4. Reference device.** A mid-range phone that all performance bars are measured on, plus which phones João owns for manual testing.
