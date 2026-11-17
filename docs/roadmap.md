@@ -9,7 +9,7 @@ The skeleton everything else grows on, with the quality gates in place from the 
 - Rust workspace for the engine, Android app module, UniFFI bridge, Gradle build that compiles the Rust crates for arm64 and x86_64.
 - A minimal IME: shows a QWERTY layout, commits letters, space, backspace and enter through the text field adapter. No prediction yet.
 - The bench app of misbehaving text fields, with its first cases.
-- CI: Rust tests, Kotlin tests, lint, 16 KB alignment check, emulator UI test that types into the bench app.
+- CI: Rust format, clippy and tests, Android lint and Kotlin compiler with warnings as errors, 16 KB alignment check, emulator UI tests that type into the bench app.
 
 **Exit:** a debug build installs on the emulator and on a physical phone, types correctly into the bench app and Chrome, and CI is green.
 
@@ -74,6 +74,7 @@ Nothing about quality is decided without this.
 
 - Full compatibility matrix pass (documented exceptions only where the app itself is at fault and every keyboard fails).
 - Onboarding, store listing, Data safety form, F-Droid metadata.
+- In-app open source licenses screen, generated at build time from the Gradle and Cargo dependency graphs, replacing the hand-kept list in `THIRD_PARTY_NOTICES.md`.
 - Closed testing track on Play.
 
 **Exit:** crash-free sessions above 99.9% across the beta, no open release-blocking issues.

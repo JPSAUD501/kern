@@ -17,3 +17,29 @@ Kern is an open source Android keyboard. Read `docs/product.md` (what and why), 
 
 - English for code, comments, commits and docs.
 - Commits: imperative summary line, body explaining why.
+
+## Layout
+
+- `engine/kern-core`: the typing engine in Rust, platform-independent. Layouts are JSON in `engine/kern-core/layouts`.
+- `engine/kern-ffi`: the engine's Kotlin API, generated with UniFFI.
+- `android/engine`: Android library that builds the Rust engine with cargo-ndk and the bindings with UniFFI (Gradle plugin in `build-logic`).
+- `android/app`: the keyboard app (input method service, keyboard view, setup screen).
+- `android/bench`: test app of text fields and the UI tests that type into it with the installed keyboard.
+
+## Build and test
+
+Needs JDK 21, the Android SDK with the NDK version in `gradle/libs.versions.toml`, rustup (the toolchain in `rust-toolchain.toml` installs itself) and `cargo install cargo-ndk --version 4.1.2 --locked`. CI (`.github/workflows/ci.yml`) runs the same commands.
+
+```sh
+cargo fmt --all --check
+cargo clippy --workspace --all-targets --locked -- -D warnings
+cargo test --workspace --locked
+
+./gradlew :app:lintDebug :bench:lintDebug :app:assembleDebug :app:assembleRelease
+scripts/check-native-alignment.sh android/app/build/outputs/apk/*/*.apk
+
+# UI tests, with an emulator or phone connected and its language set to English:
+./gradlew :app:installDebug :bench:connectedDebugAndroidTest
+```
+
+Kotlin and Android lint warnings fail the build.
